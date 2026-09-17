@@ -1,39 +1,56 @@
-# Camera Control System
+## Deskripsi
+Proyek ini adalah sebuah aplikasi Python untuk mengontrol kamera (webcam/UVC) secara langsung dari desktop atau perangkat embedded. Aplikasi ini mendukung fitur pratinjau (live preview), pengambilan foto (single capture), mode jepretan beruntun (burst capture), hingga pendeteksian wajah (face detection) secara real-time. Selain itu, proyek ini memiliki kontrol manual terhadap Exposure dan ISO, yang dibantu dengan simulasi software apabila hardware tidak mendukungnya secara native.
 
-A Python-based camera control tool tailored for embedded systems and desktop environments. It allows live previewing of camera feeds, single photo capture, a dedicated burst capture mode, and real-time face detection.
+## Teknologi / Stack
+- Python (>= 3.x)
+- OpenCV (`opencv-python<5.0.0`)
+- Pynput (`pynput>=1.7.6`)
+- Numpy (`numpy>=1.21.0`)
 
-## Setup & Installation
-
-1. Create a Python virtual environment (optional but recommended).
-2. Install the required dependencies:
+## Cara Instalasi
+1. Pastikan Python 3 sudah terinstal di sistem Anda.
+2. Clone atau unduh repositori ini.
+3. Buka terminal di dalam folder `camera-control/`.
+4. (Opsional) Buat dan aktifkan virtual environment:
+   ```bash
+   python -m venv venv
+   # Di Windows:
+   venv\Scripts\activate
+   # Di Linux/Mac:
+   source venv/bin/activate
+   ```
+5. Install semua dependensi menggunakan pip:
    ```bash
    pip install -r requirements.txt
    ```
 
-## Usage
+## Cara Menjalankan
+Jalankan script utama dengan perintah berikut di terminal:
+```bash
+python main.py
+```
+*(Tidak ada port khusus yang digunakan karena ini adalah aplikasi desktop/GUI berbasis OpenCV)*
 
-1. Open `config.py` to adjust your baseline camera configurations, or leave them as default.
-2. Run the main script:
-   ```bash
-   python main.py
-   ```
+## Struktur Folder
+```text
+camera-control/
+├── captures/               # Folder tempat menyimpan hasil jepretan foto (auto-generated)
+├── __pycache__/            # Folder cache Python
+├── camera_controller.py    # Class inti pengontrol kamera dan simulasi exposure/ISO
+├── config.py               # File konfigurasi parameter default (resolusi, shutter, dll)
+├── cv2_dir.txt             # Berisi mapping Haar Cascades (resource internal)
+├── main.py                 # File utama yang berisi loop UI OpenCV dan event listener keyboard
+├── README.md               # Dokumentasi proyek ini
+└── requirements.txt        # Daftar dependensi library
+```
 
-### Key Mapping
-- **`SPACE`**: Capture a single photo.
-- **`B` (Hold)**: Continuous burst capture. Starts immediately when pressed and stops precisely when released.
-- **`F`**: Toggle Real-time Face Detection on/off.
-- **`S`**: Cycle camera resolution (e.g., 640x480 -> 1280x720 -> 1920x1080).
-- **`O`**: Toggle Orientation (Landscape / Portrait).
-- **`+` / `-`**: Increase / Decrease Shutter Speed (Exposure) live.
-- **`[` / `]`**: Decrease / Increase ISO (Gain) live.
-- **`R`**: Reset Exposure & ISO to the defaults specified in `config.py`.
-- **`Q` or `ESC`**: Exit the application safely.
-
-All captured photos will be saved inside the automatically generated `captures/` directory with a timestamp.
-
-## Advanced Features
-- **Face Detection:** Uses optimized Haar Cascades. Detection is processed on a low-resolution downscaled frame to maintain high FPS (even at 720p/1080p), and the green bounding boxes are mapped back to the UI. The boxes are only drawn on the preview, keeping your saved captures perfectly clean.
-- **Hybrid Hardware/Software Exposure & ISO:** The script actively verifies if your UVC driver accepts the Exposure/Gain command via `cap.get()` every time you adjust it.
-  - **[HW] Mode**: If accepted, the camera natively adjusts it.
-  - **[SW SIM] Mode**: If rejected (which is common on Windows DSHOW), the system seamlessly kicks in a Software Simulation. It maps Shutter Speed to a brightness algorithm (`cv2.convertScaleAbs`), and maps ISO to an alpha multiplier mixed with a safe `np.clip` Gaussian noise generator to mimic high-ISO sensor grain. This simulation is applied directly to the raw frame, ensuring your preview perfectly matches your saved image!
-- **Black Screen Prevention:** The script features an auto-recovery mechanism. If it detects that the raw frame is nearly completely black (underexposed), it will issue a warning in the console and automatically bump the gain/exposure slightly to prevent UI lockup.
+## Catatan Tambahan
+- **Keybindings Utama saat aplikasi berjalan:**
+  - `SPACE` = Ambil 1 foto
+  - Tahan `B` = Burst capture (ambil foto beruntun)
+  - `F` = Aktifkan/matikan Face Detection
+  - `+` / `-` = Naikkan/turunkan Exposure
+  - `[` / `]` = Turunkan/naikkan ISO
+  - `Q` / `ESC` = Keluar dari aplikasi
+- **Face Detection** di aplikasi ini menggunakan optimasi skala resolusi, sehingga tidak memperlambat FPS dan kotak hijau pendeteksi hanya muncul di layar preview, tidak ikut tersimpan pada foto di folder `captures/`.
+- File gambar akan tersimpan berformat JPG dengan nama berdasarkan *timestamp* di folder `captures/`.
