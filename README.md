@@ -1,45 +1,66 @@
-# Technical Assignment Repository
+# Repositori Tugas Teknis
 
-This repository contains all the technical assignment projects, separated into their respective directories. 
+Repositori ini berisi kumpulan proyek tugas teknis, yang masing-masing dipisahkan ke dalam direktorinya sendiri. Proyek-proyek ini mencakup pengembangan web, visi komputer, dan pembelajaran mesin.
 
-## Project Structure
+## Struktur Proyek
 
-- [**ci_cms**](./ci_cms): A CodeIgniter 4 based Content Management System (CMS) with an E-commerce simulation feature, including dynamic shopping cart, simulated payment gateway, and printable receipt.
-- [**camera-control**](./camera-control): A Python-based script for interacting with and controlling cameras using OpenCV.
-- [**fruits_project**](./fruits_project): A Machine Learning/Computer Vision project for fruit detection using YOLOv8.
+Repositori ini terdiri dari tiga proyek utama:
 
-## Installation & Usage
+- [**ci_cms**](./ci_cms): Sistem Manajemen Konten (CMS) yang dibangun menggunakan framework CodeIgniter 4. Proyek ini dilengkapi dengan fitur simulasi E-commerce yang mencakup keranjang belanja dinamis, simulasi gerbang pembayaran (payment gateway), serta fitur cetak struk (receipt).
+- [**camera-control**](./camera-control): Skrip berbasis Python yang digunakan untuk berinteraksi dengan dan mengontrol kamera menggunakan pustaka OpenCV.
+- [**fruits_project**](./fruits_project): Proyek Pembelajaran Mesin (Machine Learning) dan Visi Komputer (Computer Vision) untuk mendeteksi buah-buahan menggunakan arsitektur YOLOv8.
 
-### 1. CI CMS (`ci_cms`)
-- **Requirements**: PHP 8.x, Composer, MySQL/MariaDB
-- **Setup**:
-  1. Navigate to `ci_cms/` directory.
-  2. Run `composer install` to install dependencies.
-  3. Copy `env` to `.env` and configure your database settings.
-  4. Run migrations: `php spark migrate`
-  5. Run the development server: `php spark serve`
-  6. Access via `http://localhost:8080`.
+## Panduan Instalasi & Penggunaan
 
-### 2. Camera Control (`camera-control`)
-- **Requirements**: Python 3.x
-- **Setup**:
-  1. Navigate to `camera-control/` directory.
-  2. Create a virtual environment: `python -m venv venv`
-  3. Activate it: `venv\Scripts\activate` (Windows)
-  4. Install dependencies: `pip install -r requirements.txt`
-  5. Run the application: `python main.py`
+Berikut adalah panduan lengkap untuk mengatur dan menjalankan masing-masing proyek di lingkungan lokal Anda.
 
-### 3. Fruits Detection Project (`fruits_project`)
-- **Requirements**: Python 3.x
-- **Setup**:
-  1. Navigate to `fruits_project/` directory.
-  2. Create a virtual environment: `python -m venv venv`
-  3. Activate it: `venv\Scripts\activate` (Windows)
-  4. Install dependencies: `pip install -r requirements.txt`
-  5. Run training/inference as documented in the folder's README.
+### 1. Sistem Manajemen Konten CodeIgniter (`ci_cms`)
+Proyek ini adalah aplikasi web CMS dan simulasi e-commerce.
+- **Persyaratan Sistem**: PHP 8.1 atau lebih baru, Composer, MySQL/MariaDB
+- **Langkah-langkah Instalasi**:
+  1. Buka terminal atau command prompt dan arahkan ke direktori proyek: `cd ci_cms/`
+  2. Instal semua dependensi menggunakan Composer: `composer install`
+  3. Salin file konfigurasi lingkungan: salin file `env` menjadi `.env`.
+  4. Buka file `.env`, hilangkan tanda komentar (`#`), dan atur konfigurasi basis data Anda pada bagian `database.default` (seperti `hostname`, `database`, `username`, dan `password`).
+  5. Jalankan migrasi untuk membuat struktur tabel di basis data: `php spark migrate`
+  6. Jalankan server pengembangan lokal bawaan CodeIgniter: `php spark serve`
+  7. Buka browser dan akses aplikasi melalui `http://localhost:8080`.
 
-## System Specifications
+### 2. Kontrol Kamera (`camera-control`)
+Proyek ini menangani aliran video dan interaksi dengan perangkat kamera.
+- **Persyaratan Sistem**: Python 3.10 atau lebih baru
+- **Langkah-langkah Instalasi**:
+  1. Arahkan terminal ke direktori proyek: `cd camera-control/`
+  2. Buat lingkungan virtual (virtual environment) Python agar dependensi proyek terisolasi: `python -m venv venv`
+  3. Aktifkan lingkungan virtual:
+     - Untuk Windows: `venv\Scripts\activate`
+     - Untuk Linux/Mac: `source venv/bin/activate`
+  4. Instal semua pustaka Python yang dibutuhkan: `pip install -r requirements.txt`
+  5. Jalankan aplikasi utama: `python main.py`
 
-The projects were developed and tested on the following environment:
-- **Operating System**: Windows 11
-- **Tools**: PHP 8.1+, Composer, Python 3.10+, CodeIgniter 4, YOLOv8, OpenCV
+### 3. Deteksi Buah (`fruits_project`)
+Proyek ini difokuskan pada pelatihan dan inferensi model pendeteksi objek.
+- **Persyaratan Sistem**: Python 3.10 atau lebih baru
+- **Langkah-langkah Instalasi**:
+  1. Arahkan terminal ke direktori proyek: `cd fruits_project/`
+  2. Buat lingkungan virtual (virtual environment) Python: `python -m venv venv`
+  3. Aktifkan lingkungan virtual:
+     - Untuk Windows: `venv\Scripts\activate`
+     - Untuk Linux/Mac: `source venv/bin/activate`
+  4. Instal semua dependensi yang diperlukan: `pip install -r requirements.txt`
+  5. Untuk menjalankan pelatihan model (training) atau inferensi (pengujian), silakan merujuk pada instruksi spesifik di dalam direktori proyek ini atau jalankan skrip utama, misalnya `python train.py`.
+
+## Spesifikasi Sistem
+
+Proyek-proyek di dalam repositori ini dikembangkan dan telah diuji pada lingkungan dengan spesifikasi berikut:
+- **Sistem Operasi**: Windows 11
+- **Perangkat Lunak & Alat Utama**: 
+  - PHP 8.1+
+  - Composer
+  - Python 3.10+
+  - CodeIgniter 4
+  - YOLOv8 (Ultralytics)
+  - OpenCV
+
+---
+*Silakan jelajahi masing-masing folder proyek untuk melihat kode sumber dan informasi yang lebih spesifik.*

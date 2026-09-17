@@ -1,69 +1,66 @@
-# CodeIgniter 4 Application Starter
+## Deskripsi
+Proyek ini adalah sebuah Sistem Manajemen Konten (CMS) yang terintegrasi dengan fitur E-Commerce. Proyek ini dibangun di atas framework CodeIgniter 4 dan mengadopsi arsitektur Model-Service-Controller-View (MSCV). Fungsionalitas utamanya meliputi manajemen inventaris produk, pembuatan pesanan (add to cart), sistem simulasi pembayaran yang sangat interaktif (gateway simulation), pencatatan riwayat transaksi yang aman menggunakan _Database Transaction_ untuk menghindari race-condition stok, serta fitur cetak Struk Pembelian (PDF/Thermal receipt).
 
-## What is CodeIgniter?
+## Teknologi / Stack
+- PHP (`^8.2`)
+- CodeIgniter 4 (`codeigniter4/framework: ^4.7`)
+- Basis Data (MySQL / MariaDB via MySQLi)
+- Composer (sebagai Dependency Manager)
+- Bootstrap 5 (CSS/UI) & Vanilla JavaScript
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Cara Instalasi
+1. Pastikan Anda telah menginstal PHP 8.2+ dan Composer di sistem Anda, beserta server MySQL (misal menggunakan XAMPP/Laragon).
+2. Clone atau unduh repositori ini.
+3. Buka terminal di dalam folder `ci_cms/`.
+4. Install semua dependensi CodeIgniter menggunakan Composer:
+   ```bash
+   composer install
+   ```
+5. Siapkan konfigurasi Environment:
+   - Copy atau duplikat file `env` dan ubah namanya menjadi `.env`.
+   - Buka `.env` dan atur URL:
+     `app.baseURL = 'http://localhost:8080/'`
+   - Pada file `.env`, atur bagian Database Configuration (buang tanda `#` di awal baris):
+     ```env
+     database.default.hostname = localhost
+     database.default.database = nama_database_anda
+     database.default.username = root
+     database.default.password = 
+     database.default.DBDriver = MySQLi
+     ```
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Cara Menjalankan
+1. Pastikan servis database MySQL di XAMPP/Laragon sudah berjalan.
+2. Pertama, lakukan migrasi struktur tabel database. Di terminal jalankan:
+   ```bash
+   php spark migrate
+   ```
+3. Mulai server *development* bawaan CodeIgniter dengan perintah:
+   ```bash
+   php spark serve
+   ```
+*(Aplikasi web akan secara otomatis berjalan di port default: `http://localhost:8080`)*
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Struktur Folder
+```text
+ci_cms/
+├── app/
+│   ├── Config/          # Berisi konfigurasi aplikasi, database, dan routing (Routes.php)
+│   ├── Controllers/     # Logic Controller standar HTTP Request
+│   ├── Database/        # Skrip Migration untuk tabel database
+│   ├── Models/          # Model Database (ProductModel, TransactionModel, dsb.)
+│   ├── Services/        # Logic Bisnis (MSCV pattern, misal: TransactionService.php)
+│   └── Views/           # Berkas antarmuka HTML/PHP untuk Web CMS
+├── public/              # Document root (aset gambar produk, index.php utama web server)
+├── tests/               # Unit testing environment
+├── vendor/              # Folder dependensi pihak ketiga hasil install Composer
+├── writable/            # Folder sementara untuk cache, session, dan log CodeIgniter
+├── .env                 # Environment configuration (konfigurasi rahasia)
+├── check_db.php         # Script utilitas kecil (optional check)
+├── composer.json        # Manifest Dependency Composer
+└── README.md            # Dokumentasi proyek ini
+```
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
-
-## Installation & updates
-
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
-
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
-
-## Setup
-
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 8.2 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## Catatan Tambahan
+- **Arsitektur MSCV:** Berbeda dari standar MVC biasa, seluruh *business logic* rumit (seperti pengecekan stok beruntun, pemotongan kuantitas, validasi) tidak ditempatkan di dalam Controller maupun Model, melainkan dibungkus dalam folder `app/Services/`. Controller hanya menerima *request* HTTP dan berinteraksi langsung dengan Service.
+- **Database Transaction:** Pemotongan stok bersifat transaksional. Bila proses *insert* baris pesanan atau saat *update* gagal di pertengahan jalan, sistem akan me-*Rollback* seluruh transaksi, sehingga data pesanan batal dan stok asli tak akan pernah hangus/terpotong tanpa alasan.
